@@ -1,59 +1,57 @@
-package structures.singleLinked;
+package structures.singlelinked;
 
-import java.util.ArrayList;
+public class SingleLinkedList<K, V> {
 
-public class SingleLinkedList {
+    private Node<K, V> root;
 
-    private Node root;
-
-    public SingleLinkedList() {
-    }
-
-    public void put(int data) {
+    public void put(K key, V value) {
         if (root == null) {
-            root = new Node(data);
+            root = new Node<>(key, value);
+            root.setNext(root);
         } else {
-            Node node = root;
+            Node<K, V> node = root;
             while (node.getNext() != root) {
                 node = node.getNext();
             }
-            node.setNext(new Node(data, root));
+            Node<K, V> temp = new Node<>(key, value);
+            temp.setNext(root);
+            node.setNext(temp);
         }
     }
 
-    public Node find(int data) {
+    public V get(K key) {
         if (root == null) {
             return null;
         }
-        Node node = root;
+        Node<K, V> node = root;
         while (node.getNext() != root) {
-            if (node.getData() == data) {
-                return node;
+            if (node.getKey().equals(key)) {
+                return node.getValue();
             }
             node = node.getNext();
         }
-        if (node.getData() == data) {
-            return node;
+        if (node.getKey().equals(key)) {
+            return node.getValue();
         } else {
             return null;
         }
     }
 
-    public Node getLastNode() {
-        Node node = root;
+    public Node<K, V> getLastNode() {
+        Node<K, V> node = root;
         while (node.getNext() != root) {
             node = node.getNext();
         }
         return node;
     }
 
-    public boolean delete(int data) {
+    public boolean delete(K key) {
         if (root == null) {
             return false;
         }
         //Root removal
-        if (root.getData() == data) {
-            Node last = getLastNode();
+        if (root.getKey().equals(key)) {
+            Node<K, V> last = getLastNode();
             if (root.getNext() == root) {
                 root = null;
             } else {
@@ -62,35 +60,28 @@ public class SingleLinkedList {
             }
             return true;
         }
-        Node node = root;
-        while (node.getNext().getData() != data) {
+        Node<K, V> node = root;
+        while (!node.getNext().getKey().equals(key)) {
             node = node.getNext();
             if (node == root) {
                 return false;
             }
         }
-        Node next = node.getNext().getNext();
+        Node<K, V> next = node.getNext().getNext();
         node.setNext(next);
         return true;
     }
 
     public void print() {
-        Node node = root;
+        Node<K, V> node = root;
         while (node.getNext() != root) {
-            System.out.print(node.getData() + " -> ");
+            System.out.print("[" + node.getKey() + "|" + node.getValue() + "] -> ");
             node = node.getNext();
         }
-        System.out.println(node.getData() + ".");
+        System.out.println("[" + node.getKey() + "|" + node.getValue() + "].");
     }
 
-    public ArrayList<Integer> getArray() {
-        ArrayList<Integer> list = new ArrayList<>();
-        Node node = root;
-        while (node.getNext() != root) {
-            list.add(node.getData());
-            node = node.getNext();
-        }
-        list.add(node.getData());
-        return list;
+    public Node<K, V> getRoot() {
+        return root;
     }
 }

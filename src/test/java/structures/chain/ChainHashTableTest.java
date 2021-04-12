@@ -2,66 +2,75 @@ package structures.chain;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import structures.singleLinked.Node;
-import structures.singleLinked.SingleLinkedList;
 
 class ChainHashTableTest {
     @Test
-    public void emptyTable() {
-        ChainHashTable table = new ChainHashTable(5);
-        Assertions.assertEquals(5, table.getHashArray().length);
+    public void newTable() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>(5);
+        Assertions.assertEquals(5, table.getCapacity());
+        table = new ChainHashTable<>();
+        Assertions.assertEquals(10, table.getCapacity());
     }
     @Test
-    public void find() {
-        ChainHashTable table = new ChainHashTable(2);
-        table.insert(1);
-        table.insert(2);
-        table.insert(3);
-        table.insert(4);
-        table.insert(5);
-        Assertions.assertEquals(3, table.find(3).getData());
-        Assertions.assertNull(table.find(15));
+    public void putAndFind() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>();
+        table.put(5, 8);
+        table.put(1, 14);
+        table.put(485, 3);
+        Assertions.assertEquals(8, table.get(5));
+        Assertions.assertEquals(14, table.get(1));
+        Assertions.assertEquals(3, table.get(485));
     }
     @Test
-    public void insert() {
-        ChainHashTable table = new ChainHashTable(5);
-        table.insert(1);
-        table.insert(2);
-        table.insert(3);
-        table.insert(4);
-        table.insert(5);
-        SingleLinkedList[] tableArray = table.getHashArray();
-        for (int i = 0; i < 5; i++) {
-            SingleLinkedList chain = tableArray[table.getHash(i + 1)];
-            Node result = chain.find(i + 1);
-            Assertions.assertEquals(i + 1, result.getData());
-        }
+    public void itemsMoreThanCapacity() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>();
+        Assertions.assertEquals(10, table.getCapacity());
+        table.put(1, 11);
+        table.put(2, 22);
+        table.put(3, 33);
+        table.put(4, 44);
+        table.put(5, 55);
+        table.put(6, 66);
+        table.put(7, 77);
+        table.put(8, 88);
+        table.put(9, 99);
+        table.put(10, 1010);
+        table.put(11, 1111);
+        Assertions.assertEquals(20, table.getCapacity());
+        Assertions.assertEquals(1111, table.get(11));
+        Assertions.assertEquals(55, table.get(5));
+        Assertions.assertEquals(11, table.get(1));
     }
     @Test
-    public void delete() {
-        ChainHashTable table = new ChainHashTable(5);
-        table.insert(1);
-        table.insert(2);
-        table.insert(3);
-        table.insert(4);
-        table.insert(5);
-        Assertions.assertTrue(table.delete(1));
-        Assertions.assertTrue(table.delete(2));
-        Assertions.assertTrue(table.delete(3));
-        Assertions.assertTrue(table.delete(4));
-        Assertions.assertTrue(table.delete(5));
-        SingleLinkedList[] tableArray = table.getHashArray();
-        for (int i = 0; i < 5; i++) {
-            SingleLinkedList chain = tableArray[table.getHash(i + 1)];
-            Node result = chain.find(i + 1);
-            Assertions.assertNull(result);
-        }
+    public void putAndFindString() {
+        ChainHashTable<String, Integer> table = new ChainHashTable<>();
+        table.put("test", 8);
+        table.put("test1", 14);
+        table.put("test2", 3);
+        Assertions.assertEquals(8, table.get("test"));
+        Assertions.assertEquals(14, table.get("test1"));
+        Assertions.assertEquals(3, table.get("test2"));
     }
     @Test
-    public void deleteNonExisted() {
-        ChainHashTable table = new ChainHashTable(5);
-        Assertions.assertFalse(table.delete(1));
-        Assertions.assertFalse(table.delete(2));
-        Assertions.assertFalse(table.delete(3));
+    public void remove() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>();
+        table.put(5, 8);
+        table.put(1, 14);
+        table.put(485, 3);
+        Assertions.assertEquals(3, table.getSize());
+        table.remove(1);
+        Assertions.assertNull(table.get(1));
+        Assertions.assertEquals(2, table.getSize());
+        Assertions.assertFalse(table.remove(1));
+    }
+    @Test
+    public void removeNotExisted() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>();
+        Assertions.assertFalse(table.remove(123));
+    }
+    @Test
+    public void findNotExisted() {
+        ChainHashTable<Integer, Integer> table = new ChainHashTable<>();
+        Assertions.assertNull(table.get(1));
     }
 }

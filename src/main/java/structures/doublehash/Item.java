@@ -1,19 +1,19 @@
 package structures.doublehash;
 
-public class Item {
-    private final int key;
-    private final int data;
+public class Item<K, V> {
+    private final K key;
+    private V value;
 
-    public Item(int key, int data) {
+    public Item(K key, V value) {
         this.key = key;
-        this.data = data;
+        this.value = value;
     }
 
-    public int getKey() {
+    public K getKey() {
         return key;
     }
 
-    public int getData() {
-        return data;
+    public V getValue() {
+        return value;
     }
 }

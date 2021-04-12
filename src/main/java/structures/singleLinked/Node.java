@@ -1,28 +1,33 @@
-package structures.singleLinked;
+package structures.singlelinked;
 
-public class Node {
-    private Node next;
-    private int data;
+public class Node<K,V> {
+    private final K key;
+    private V value;
 
-    Node(int data, Node next) {
-        this.data = data;
+    private Node<K, V> next;
+
+    public Node(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public void setNext(Node<K, V> next) {
         this.next = next;
     }
 
-    Node(int data) {
-        this.data = data;
-        this.next = this;
-    }
-
-    public void setNext(Node next) {
-        this.next = next;
-    }
-
-    public int getData() {
-        return data;
-    }
-
-    public Node getNext() {
+    public Node<K, V> getNext() {
         return next;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+
+    public V getValue() {
+        return value;
+    }
+
+    public K getKey() {
+        return key;
     }
 }

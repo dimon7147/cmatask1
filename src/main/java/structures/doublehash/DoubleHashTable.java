@@ -1,68 +1,98 @@
 package structures.doublehash;
 
-public class DoubleHashTable {
-    private final Item[] hashArray;
-    private final int empty;
+import java.util.ArrayList;
+
+public class DoubleHashTable<K,V> {
+    private ArrayList<Item<K,V>> hashArray;
+    // Вместимость массива
+    private int capacity;
+    // Текущий размер массива
+    private int size;
 
     public DoubleHashTable(int size) {
-        if (size <= 1) {
-            this.hashArray = new Item[2];
-        } else {
-            this.hashArray = new Item[size];
+        this.hashArray = new ArrayList<>(size);
+        this.capacity = size;
+        this.size = 0;
+        for (int i = 0; i < capacity; i++) {
+            hashArray.add(null);
         }
-        this.empty = -1;
+    }
+    public DoubleHashTable() {
+        this(10);
     }
 
-    public int hashFunc1(int key) {
-        return key % hashArray.length;
+    public int hashFunc1(K key) {
+        int index = key.hashCode() % capacity;
+        // key.hashCode() может быть отрицательным.
+        return index < 0 ? index * (-1) : index;
     }
 
-    public int hashFunc2(int key) {
-        if (hashArray.length <= 5) {
-            int length = hashArray.length - 1;
-            return length - key % length;
-        }
-        return 5 - key % 5;
+    public int hashFunc2(K key) {
+        return capacity - (hashFunc1(key) % capacity);
     }
 
-    public void insert(int key, int value) {
+    public void put(K key, V value) {
         int hashVal = hashFunc1(key);
         int stepSize = hashFunc2(key);
-        while(hashArray[hashVal] != null && hashArray[hashVal].getKey() != empty) {
+        while(hashArray.get(hashVal) != null) {
             hashVal += stepSize;
-            hashVal %= hashArray.length;
+            hashVal %= capacity;
         }
-        hashArray[hashVal] = new Item(key, value);
+        hashArray.set(hashVal, new Item<>(key, value));
+        size++;
+        // Если коеффициент загрузки привышен, то увеличиваем размер хеш-таблицы вдвое
+        if ((1.0 * size) / capacity >= 0.7) {
+            ArrayList<Item<K,V>> temp = hashArray;
+            hashArray = new ArrayList<>();
+            capacity *= 2;
+            size = 0;
+            for (int i = 0; i < capacity; i++) {
+                hashArray.add(null);
+            }
+            for (Item<K, V> item : temp) {
+                if (item != null) {
+                    put(item.getKey(), item.getValue());
+                }
+            }
+        }
     }
 
-    public boolean delete(int key) {
+    public boolean delete(K key) {
         int hashVal = hashFunc1(key);
         int stepSize = hashFunc2(key);
-        while (hashArray[hashVal] != null) {
-            if (hashArray[hashVal].getKey() == key) {
-                hashArray[hashVal] = new Item(empty, empty);
+        while (hashArray.get(hashVal) != null) {
+            if (hashArray.get(hashVal).getKey().equals(key)) {
+                hashArray.set(hashVal, null);
                 return true;
             }
             hashVal += stepSize;
-            hashVal %= hashArray.length;
+            hashVal %= capacity;
         }
         return false;
     }
 
-    public int find(int key) {
+    public V get(K key) {
         int hashVal = hashFunc1(key);
         int stepSize = hashFunc2(key);
-        while (hashArray[hashVal] != null) {
-            if (hashArray[hashVal].getKey() == key) {
-                return hashArray[hashVal].getData();
+        while (hashArray.get(hashVal) != null) {
+            if (hashArray.get(hashVal).getKey().equals(key)) {
+                return hashArray.get(hashVal).getValue();
             }
             hashVal += stepSize;
-            hashVal %= hashArray.length;
+            hashVal %= capacity;
         }
-        return empty;
+        return null;
     }
 
-    public Item[] getHashArray() {
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public ArrayList<Item<K, V>> getHashArray() {
         return hashArray;
     }
 }
