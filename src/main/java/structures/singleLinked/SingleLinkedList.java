@@ -76,14 +76,16 @@ public class SingleLinkedList<K, V> implements Actions<K, V> {
         }
         return node;
     }
-
-    public void print() {
+    @Override
+    public String toString() {
         Node<K, V> node = root;
+        StringBuilder builder = new StringBuilder();
         while (node.getNext() != root) {
-            System.out.print("[" + node.getKey() + "|" + node.getValue() + "] -> ");
+            builder.append(node).append(" -> ");
             node = node.getNext();
         }
-        System.out.println("[" + node.getKey() + "|" + node.getValue() + "].");
+        builder.append(node).append(".");
+        return builder.toString();
     }
 
     public Node<K, V> getRoot() {

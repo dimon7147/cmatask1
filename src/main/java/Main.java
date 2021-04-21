@@ -32,10 +32,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        final int size = 100000;
-        test(new HashMap<>(), size, "HashMap");
-        test(new ChainHashTable<>(), size, "ChainHashTable");
-        test(new DoubleHashTable<>(), size, "DoubleHashTable");
-        test(new SingleLinkedList<>(), size, "SingleLinkedCycledList");
+        final int SIZE = 100_000;
+        test(new HashMap<>(), SIZE, "HashMap");
+        test(new ChainHashTable<>(), SIZE, "ChainHashTable");
+        test(new DoubleHashTable<>(), SIZE, "DoubleHashTable");
+        test(new SingleLinkedList<>(), SIZE, "SingleLinkedCycledList");
     }
 }

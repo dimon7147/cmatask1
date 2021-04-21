@@ -11,6 +11,11 @@ public class Node<K,V> {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "[" + key + "|" + value + "]";
+    }
+
     public void setNext(Node<K, V> next) {
         this.next = next;
     }

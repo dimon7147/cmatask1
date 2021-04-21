@@ -1,7 +1,7 @@
 package structures.tables.chain;
 
-import structures.tables.AbstractTable;
 import structures.singlelinked.Node;
+import structures.tables.AbstractTable;
 
 import java.util.ArrayList;
 
@@ -113,5 +113,25 @@ public class ChainHashTable<K, V> extends AbstractTable<K, V> {
                 headNode = headNode.getNext();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        Node<K, V> node;
+        for (int i = 0; i < capacity; i++) {
+            node = hashArray.get(i);
+            builder.append(i).append(": ");
+            if (node == null) {
+                builder.append("null").append(".").append("\n");
+                continue;
+            }
+            while (node != null) {
+                builder.append(node).append(" -> ");
+                node = node.getNext();
+            }
+            builder.append("null").append(".").append("\n");
+        }
+        return builder.toString();
     }
 }

@@ -80,4 +80,15 @@ public class DoubleHashTable<K, V> extends AbstractTable<K, V> {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        Item<K, V> item;
+        for (int i = 0; i < capacity; i++) {
+            item = hashArray.get(i);
+            builder.append(i).append(": ").append(item).append(".").append("\n");
+        }
+        return builder.toString();
+    }
 }
