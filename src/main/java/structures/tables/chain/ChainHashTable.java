@@ -1,6 +1,5 @@
 package structures.tables.chain;
 
-import structures.singlelinked.Node;
 import structures.tables.AbstractTable;
 
 import java.util.ArrayList;

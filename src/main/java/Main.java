@@ -30,6 +30,17 @@ public class Main {
         time = System.currentTimeMillis() - time;
         System.out.println(name + ": " + time);
     }
+    public static void test(SingleLinkedList<Integer> type, int size, String name) {
+        long time = System.currentTimeMillis();
+        for (int i = 0; i < size; i++) {
+            type.put(i);
+        }
+        for (int i = 0; i < size; i++) {
+            Assertions.assertEquals(i, type.get(i));
+        }
+        time = System.currentTimeMillis() - time;
+        System.out.println(name + ": " + time);
+    }
 
     public static void main(String[] args) {
         final int SIZE = 100_000;

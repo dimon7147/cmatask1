@@ -1,26 +1,24 @@
 package structures.singlelinked;
 
-public class Node<K,V> {
-    private final K key;
+public class Node<V> {
     private V value;
 
-    private Node<K, V> next;
+    private Node<V> next;
 
-    public Node(K key, V value) {
-        this.key = key;
+    public Node(V value) {
         this.value = value;
     }
 
     @Override
     public String toString() {
-        return "[" + key + "|" + value + "]";
+        return "[" + value + "]";
     }
 
-    public void setNext(Node<K, V> next) {
+    public void setNext(Node<V> next) {
         this.next = next;
     }
 
-    public Node<K, V> getNext() {
+    public Node<V> getNext() {
         return next;
     }
 
@@ -30,9 +28,5 @@ public class Node<K,V> {
 
     public V getValue() {
         return value;
-    }
-
-    public K getKey() {
-        return key;
     }
 }
