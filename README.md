@@ -1,4 +1,4 @@
-# linked-double-hashtable-single-linked-list
+# datastructures
 Реализация двух типов хеш-таблиц:
 1. Двойное хеширование
 2. Метод цепочек.
